@@ -71,13 +71,21 @@ bool BrainFuck::step(const bool ignoreNoop) {
 		if (getMemoryCell() != 0) {
 			loopStack.push(programPosition);
 		} else {
+			std::size_t nestingLevel = 1;
+
 			do {
 				instruction = readChar();
 
 				if (!instruction.has_value()) {
 					return false;
 				}
-			} while (instruction.value() != ']');
+
+				if (instruction.value() == '[') {
+					++nestingLevel;
+				} else if (instruction.value() == ']') {
+					--nestingLevel;
+				}
+			} while (nestingLevel > 0);
 		}
 		break;
 	case ']':

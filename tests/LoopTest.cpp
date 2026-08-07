@@ -19,7 +19,7 @@ TEST(LoopTest, ExcessiveClosing) {
 }
 
 TEST(LoopTest, NoopLoop) {
-	TestableBrainFuck interpreter{".[.]"};
+	TestableBrainFuck interpreter{"[+]."};
 	interpreter.run();
 
 	EXPECT_EQ(interpreter.test_output.str(), "\0"s);
@@ -30,6 +30,13 @@ TEST(LoopTest, SimpleLoop) {
 	interpreter.run();
 
 	EXPECT_EQ(interpreter.test_output.str(), "\x02\x01\x00"s);
+}
+
+TEST(LoopTest, SkipsNestedLoopWhenOuterCellIsZero) {
+	TestableBrainFuck interpreter{"[[+]+]."};
+	interpreter.run();
+
+	EXPECT_EQ(interpreter.test_output.str(), "\0"s);
 }
 
 TEST(LoopTest, MultipleInstructionsPerIteration) {
