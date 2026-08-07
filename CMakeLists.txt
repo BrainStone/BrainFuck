@@ -6,11 +6,11 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_library(brainfuck src/BrainFuck.cpp)
-target_include_directories(brainfuck PUBLIC src)
+add_library(brainfuck_lib src/BrainFuck.cpp)
+target_include_directories(brainfuck_lib PUBLIC src)
 
-add_executable(brainfuck_app src/main.cpp)
-target_link_libraries(brainfuck_app PRIVATE brainfuck)
+add_executable(brainfuck src/main.cpp)
+target_link_libraries(brainfuck PRIVATE brainfuck_lib)
 
 include(CTest)
 
