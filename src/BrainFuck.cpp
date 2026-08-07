@@ -3,17 +3,10 @@
 #include <stdexcept>
 
 BrainFuck::BrainFuck(std::istream& input, std::istream& program, std::ostream& output)
-    : input{input},
-      program{program},
-      output{output},
-      memoryPointer{0},
-      memory{memoryCellDefault},
-      programPosition{0} {
+    : input{input}, program{program}, output{output}, memoryPointer{0}, memory{memoryCellDefault}, programPosition{0} {
 	if (const pos_t pos = program.tellg(); pos == pos_t{-1}) {
 		throw std::runtime_error{"Program stream is not seekable"};
 	}
-
-	// memory.push_back(memoryCellDefault);
 }
 
 BrainFuck::memory_cell_t& BrainFuck::getMemoryCell() {
@@ -88,8 +81,12 @@ bool BrainFuck::step(const bool ignoreNoop) {
 		}
 		break;
 	case ']':
+		if (loopStack.empty()) {
+			break;
+		}
+
 		if (getMemoryCell() != 0) {
-			const pos_t diff = programPosition - loopStack.top() ;
+			const pos_t diff = programPosition - loopStack.top();
 
 			input.seekg(diff, std::ios_base::cur);
 			programPosition += diff;
@@ -113,6 +110,10 @@ bool BrainFuck::step(const bool ignoreNoop) {
 	return true;
 }
 
-[[nodiscard]] const decltype(BrainFuck::loopStack)& BrainFuck::getMemory() const {
-	return loopStack;
+[[nodiscard]] const decltype(BrainFuck::memory)& BrainFuck::getMemory() const {
+	return memory;
+}
+
+BrainFuck::pos_t BrainFuck::getProgramPosition() const {
+	return programPosition;
 }

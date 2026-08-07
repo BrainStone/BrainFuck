@@ -35,5 +35,6 @@ public:
 	void run();
 	bool step(bool ignoreNoop = true);
 
-	[[nodiscard]] const decltype(loopStack)& getMemory() const;
+	[[nodiscard]] const decltype(memory)& getMemory() const;
+	[[nodiscard]] pos_t getProgramPosition() const;
 };
