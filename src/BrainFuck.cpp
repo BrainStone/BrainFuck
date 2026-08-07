@@ -86,9 +86,10 @@ bool BrainFuck::step(const bool ignoreNoop) {
 		}
 
 		if (getMemoryCell() != 0) {
-			const pos_t diff = programPosition - loopStack.top();
+			const pos_t diff = loopStack.top() - programPosition;
 
-			input.seekg(diff, std::ios_base::cur);
+			program.clear();
+			program.seekg(diff, std::ios_base::cur);
 			programPosition += diff;
 		} else {
 			loopStack.pop();
