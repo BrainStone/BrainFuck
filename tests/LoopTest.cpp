@@ -8,6 +8,7 @@ TEST(LoopTest, ExcessiveOpening) {
 
 	EXPECT_EQ(interpreter.getMemoryCell(), '\0');
 	EXPECT_EQ(interpreter.getMemory().size(), 1);
+	EXPECT_EQ(interpreter.getProgramPosition(), 1);
 }
 
 TEST(LoopTest, ExcessiveClosing) {

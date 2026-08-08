@@ -1,5 +1,6 @@
 #include "BrainFuck.hpp"
 
+#include <iostream>
 #include <stdexcept>
 
 BrainFuck::BrainFuck(std::istream& input, std::istream& program, std::ostream& output)
@@ -14,15 +15,18 @@ BrainFuck::memory_cell_t& BrainFuck::getMemoryCell() {
 }
 
 std::optional<char> BrainFuck::readChar() {
-	if (program.eof()) {
-		return std::nullopt;
-	}
 	if (!program.good()) {
 		throw std::runtime_error{"Program stream is not good"};
 	}
 
+	const auto instruction = program.get();
+
+	if (instruction == std::istream::traits_type::eof()) {
+		return std::nullopt;
+	}
+
 	programPosition += pos_t{1};
-	return {static_cast<char>(program.get())};
+	return {static_cast<char>(instruction)};
 }
 
 void BrainFuck::run() {
@@ -32,6 +36,10 @@ void BrainFuck::run() {
 
 bool BrainFuck::step(const bool ignoreNoop) {
 	using namespace std::literals;
+
+	if (program.eof()) {
+		return false;
+	}
 
 	std::optional<char> instruction;
 
